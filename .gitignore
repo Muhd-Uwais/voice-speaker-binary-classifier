@@ -1,0 +1,21 @@
+# directories
+
+data/*
+
+
+
+# Don't ignore these "placeholder" files
+
+!data/.gitkeep
+!data/speaker0/.gitkeep
+!data/speaker1/.gitkeep
+
+
+
+
+
+
+# files
+
+sample.ipynb
+
