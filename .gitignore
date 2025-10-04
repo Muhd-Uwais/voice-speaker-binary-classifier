@@ -2,6 +2,7 @@
 
 data/speaker0/*
 data/speaker1/*
+venv/
 
 
 
@@ -19,4 +20,5 @@ data/speaker1/*
 # files
 
 sample.ipynb
+README.md
 
