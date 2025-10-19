@@ -3,10 +3,11 @@
 data/speaker0/*
 data/speaker1/*
 venv/
+dataset/
 
 
 
-# Don't ignore these "placeholder" files
+# Ignore these "placeholder" files
 
 !data/.gitkeep
 !data/speaker0/.gitkeep
@@ -21,4 +22,5 @@ venv/
 
 sample.ipynb
 README.md
+requirements.txt
 

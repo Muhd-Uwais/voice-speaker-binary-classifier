@@ -1,12 +1,18 @@
 # Voice Speaker Recognition - Audio Processing Module
 """
-This module handles the preprocessing of audio files for voice speaker recognition.
-It chunks long audio recordings into smaller segments for training a binary classification
-CNN model to distinguish between different speakers.
+This module handles the preprocessing of audio files for speaker recognition.
+It splits long recordings into smaller chunks to prepare data for training a binary
+CNN model that distinguishes between different speakers.
+
+Note:
+After the chunking process is complete, move all generated WAV files from the chunk output
+folders into their respective root speaker directories (speaker0 and speaker1).
+Then, delete the original non-chunked audio files to maintain a consistent dataset
+structure for subsequent processing steps.
 
 Author: Muhd Uwais
 Project: Deep Voice Speaker Recognition CNN
-Purpose: Audio chunks creation
+Purpose: Audio Chunk Creation
 """
 
 import os
@@ -148,11 +154,12 @@ def main():
     # Settings - modify these if needed
     CHUNK_DURATION = 3   # seconds
 
-    # Process Speaker 0 (other person's voice)
+    # Process Speaker 0 (other person's voice), write speaker1 after processing speaker0
     process_all_speaker_files(
         speaker_folder="C:/voice-speaker-binary-classifier/data/speaker0",   # Input file path
-        output_folder="C:/voice-speaker-binary-classifier/data/speaker0/chunks_3",   # Output file path
-        file_count=21,   # Change according to your file size, here there is 1- files total
+        # Output file path | Remeber to replace to root directory after processing.
+        output_folder="C:/voice-speaker-binary-classifier/data/speaker0/speaker0_chunks",   
+        file_count=21,   # Change according to your file size, here there is 0-21 files total
         chunk_seconds=CHUNK_DURATION
     )
 
