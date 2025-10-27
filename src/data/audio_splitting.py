@@ -101,7 +101,7 @@ def create_audio_chunks(
         logger.error(f"❌ Error processing {input_file: {str(e)}}")
         raise    
 
-
+# ---------------------------------------------------------
 def process_all_speaker_files(speaker_folder, output_folder, file_count, chunk_seconds=3):
     """
     Process all audio files for one speaker directory.
@@ -137,6 +137,7 @@ def process_all_speaker_files(speaker_folder, output_folder, file_count, chunk_s
 
     logging.info(f"\n📊 Summary for {speaker_folder}:   • Files processed: {processed_files}   • Total chunks created: {counter}")   
 
+# ---------------------------------------------------------
 def main():
     """
     Main function - this is where everything starts!
@@ -171,7 +172,7 @@ def main():
     return True
 
 
-
+# ---------------------------------------------------------
 # Run the script when called directly
 if __name__ == "__main__":
     main()

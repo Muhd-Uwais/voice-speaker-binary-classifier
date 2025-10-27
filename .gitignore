@@ -4,6 +4,8 @@ data/speaker0/*
 data/speaker1/*
 venv/
 dataset/
+__pycache__/
+.vscode/
 
 
 
@@ -16,11 +18,10 @@ dataset/
 
 
 
-
-
 # files
 
 sample.ipynb
 README.md
 requirements.txt
-
+sample.py
+*.pyc
