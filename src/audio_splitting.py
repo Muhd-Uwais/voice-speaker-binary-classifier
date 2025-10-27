@@ -133,7 +133,7 @@ def process_all_speaker_files(speaker_folder, output_folder, file_count, chunk_s
             )
             processed_files += 1
         else:
-            logging.error(f"⚠️  File not found: Voice ({i}).m4a")
+            logging.error(f"⚠️  File not found: Voice ({i}).m4a, continue to next file")
 
     logging.info(f"\n📊 Summary for {speaker_folder}:   • Files processed: {processed_files}   • Total chunks created: {counter}")   
 
@@ -165,11 +165,10 @@ def main():
 
     print(f"\n{'=' * 60}")
     logging.info("🎉 Audio preprocessing completed!")
-    print("✨ Your chunks are ready for the next step: creating spectrograms")
+    print("✨ Your chunks are ready for further preprocessing steps.")
     print("\nNext steps:")
-    print("1. Check the chunks_3 folders to see your generated files")
-    print("2. Run the spectrogram generation script")
-    print("3. Start training your CNN model!")
+    print("Move all chunks into root directory :- speaker0 and speaker1 for further steps!")
+    return True
 
 
 
