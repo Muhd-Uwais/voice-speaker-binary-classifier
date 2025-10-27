@@ -1,6 +1,6 @@
-# Voice Speaker Recognition - Audio Processing Module
+# Voice Speaker Recognition - Audio Splitting Module
 """
-This module handles the preprocessing of audio files for speaker recognition.
+This module handles the spltting of audio files for speaker recognition.
 It splits long recordings into smaller chunks to prepare data for training a binary
 CNN model that distinguishes between different speakers.
 
