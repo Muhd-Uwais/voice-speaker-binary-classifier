@@ -125,8 +125,15 @@ class AudioDatasetLoader:
         x_data = np.concatenate(x_list)
         y_data = np.concatenate(y_list)
 
-        logger.info(f"Final dataset shape: X={x_data.shape}, Y={y_data.shape}")
-        return self._train_test_split(x_data, y_data)
+        # Converting to batches
+        num_batches = x_data.shape[0] // self.batch_size
+        x_data_trimmed = x_data[: num_batches * self.batch_size]  # Trim data so it divides evenly
+        y_data_trimmed = y_data[: num_batches * self.batch_size]
+        x_data_batch = x_data_trimmed.reshape(num_batches, self.batch_size, x_data.shape[-2], 1)
+        y_data_batch = y_data_trimmed.reshape(num_batches, self.batch_size)  
+
+        logger.info(f"Final dataset shape: X={x_data_batch.shape}, Y={y_data_batch.shape}")
+        return self._train_test_split(x_data_batch, y_data_batch)
     
     # ---------------------------------------------------------
     def _train_test_split(self, audio, label, random_state: int = 43):
