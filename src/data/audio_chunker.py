@@ -201,7 +201,7 @@ class AudioChunker:
         # Process the speaker's directory        
         self._process_all_speaker_files(
             speaker_dir= speaker_dir,
-            output_dir=speaker_dir,
+            output_dir=output_dir,
             file_count=file_count,
         )
 
