@@ -36,11 +36,46 @@ if not logger.hasHandlers():
 
 class AudioChunker:
     """
-    A class that handles audio chunking operations for voice-based datasets.
+    AudioChunker
+    ------------
+    A class to split long audio recordings into smaller fixed-length chunks
+    for dataset preparation in speaker recognition or speech classification tasks.
 
-    Attributes:
-        chunk_duration_sec (int): Duration of each chunk in seconds.
-        sample_rate (int): Sampling rate for loading audio.
+    It processes all `.wav` or `.m4a` files in a given speaker directory,
+    generates uniform 3-second (or configurable) segments, and saves them
+    into an output folder.
+
+    Typical Workflow
+    ----------------
+    1. Initialize the class with desired parameters (sample rate, chunk duration, etc.)
+    2. Call the `run()` method with input/output directories and file count.
+    3. The method will process all files, generate chunks, and log progress.
+
+    Attributes
+    ----------
+    sample_rate : int
+        Target sampling rate for all processed audio files
+    chunk_duration_sec : int
+        Duration of each output chunk in seconds
+
+    Example
+    -------
+    >>> from audio_chunker import AudioChunker
+    >>>
+    >>> chunker = AudioChunker(sample_rate=16000, chunk_duration_sec=3)
+    >>> chunker.run(
+    ...     speaker_dir="C:/voice-speaker-binary-classifier/data/speaker0",
+    ...     output_dir="C:/voice-speaker-binary-classifier/data/speaker0/chunks",
+    ...     file_count=21
+    ... )
+    >>>
+    >>> print("Chunking completed successfully!")
+
+    Note
+    ----
+    After chunking, move all generated WAV files into their root speaker directories
+    (e.g., `speaker0`, `speaker1`) before running further preprocessing modules.
+    You can delete the original unchunked files to maintain a clean dataset structure.
     """
 
     def __init__(self, chunk_duration_sec: int = 3, sample_rate: int = 16000):
@@ -57,9 +92,8 @@ class AudioChunker:
         logger.info("Initialized AudioChunker with chunk size %d sec, sample rate %d Hz",
                     chunk_duration_sec, sample_rate)
 
-
     def _create_audio_chunks(
-        self,    
+        self,
         input_file: str,
         output_dir: str,
         counter_start: int = 0,
@@ -86,13 +120,14 @@ class AudioChunker:
 
             # --- Load audio ---
             logger.info("📁 Loading audio file: %s", input_file)
-            audio_data, sr = librosa.load(input_file, sr=self.sample_rate, mono=True)
+            audio_data, sr = librosa.load(
+                input_file, sr=self.sample_rate, mono=True)
 
             # --- Chunk parameters ---
             samples_per_chunk = int(self.chunk_duration_sec * sr)
             total_chunks = len(audio_data) // samples_per_chunk
-            logger.info("Audio length: %.2fs | Chunks to create: %d", len(audio_data) / sr, total_chunks)
-
+            logger.info("Audio length: %.2fs | Chunks to create: %d",
+                        len(audio_data) / sr, total_chunks)
 
             # --- Ensure output directory exists ---
             Path(output_dir).mkdir(parents=True, exist_ok=True)
@@ -126,14 +161,13 @@ class AudioChunker:
 
 # ---------------------------------------------------------
 
-
     def _process_all_speaker_files(
-            self,
-            speaker_dir: str, 
-            output_dir: str, 
-            file_count: int, 
-            counter_start: int = 0
-        ):
+        self,
+        speaker_dir: str,
+        output_dir: str,
+        file_count: int,
+        counter_start: int = 0
+    ):
         """
         Process all audio files in a speaker directory (e.g., Voice (1).m4a ... Voice (n).m4a).
 
@@ -167,13 +201,14 @@ class AudioChunker:
                 )
                 processed_files += 1
             else:
-                logger.warning("⚠️ File not found: Voice (%d).m4a, skipping...", i)
+                logger.warning(
+                    "⚠️ File not found: Voice (%d).m4a, skipping...", i)
 
-        logger.info(f"\n📊 Summary for {speaker_dir}: • Files processed: {processed_files} • Total chunks created: {counter}")
+        logger.info(
+            f"\n📊 Summary for {speaker_dir}: • Files processed: {processed_files} • Total chunks created: {counter}")
         return counter
 
     # ---------------------------------------------------------
-
 
     def run(
             self,
@@ -194,13 +229,13 @@ class AudioChunker:
         """
 
         logger.info("🚀 Starting Audio Chunking Pipeline")
-        logger.info("Splitting audio files in '%s' into %d-second chunks", speaker_dir, self.chunk_duration_sec)
+        logger.info("Splitting audio files in '%s' into %d-second chunks",
+                    speaker_dir, self.chunk_duration_sec)
         logger.info("=" * 50)
 
-
-        # Process the speaker's directory        
+        # Process the speaker's directory
         self._process_all_speaker_files(
-            speaker_dir= speaker_dir,
+            speaker_dir=speaker_dir,
             output_dir=output_dir,
             file_count=file_count,
         )
