@@ -161,10 +161,11 @@ class AudioDatasetLoader:
         x_data = np.concatenate(x_list)
         y_data = np.concatenate(y_list)
 
+        num_batches = x_data.shape[0] // self.batch_size
+
         logger.info(
             f"Converting to {num_batches} batches with batch_size of {self.batch_size}")
-
-        num_batches = x_data.shape[0] // self.batch_size
+        
         # Trim data so it divides evenly
         x_data_trimmed = x_data[: num_batches * self.batch_size]
         y_data_trimmed = y_data[: num_batches * self.batch_size]
