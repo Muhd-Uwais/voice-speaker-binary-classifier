@@ -33,7 +33,6 @@ Purpose: Audio Dataset Loader
 
 
 from sklearn.model_selection import train_test_split
-import keras
 import numpy as np
 import logging
 import os
@@ -119,7 +118,9 @@ class AudioDatasetLoader:
             tuple: Train-test split of (x_train, x_test, y_train, y_test)
         """
 
-        logger.info("Loading dataset from directory...")
+        logger.info("Loading dataset from directory... this may take a few seconds.")
+
+        import keras
 
         dataset = keras.utils.audio_dataset_from_directory(
             directory=self.file_path,
