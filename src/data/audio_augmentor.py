@@ -42,7 +42,7 @@ if not logger.hasHandlers():
 
 # ------------------ Audio Augmentation Class ------------------
 
-class AudioAugmentation:
+class AudioAugmentor:
     """
     AudioPreprocessing
     ------------------
@@ -113,7 +113,7 @@ class AudioAugmentation:
             noise_factor = noise_factor or np.random.uniform(0.001, 0.01)
             noise = np.random.randn(*audio.shape)
             augmented = np.clip(audio + noise_factor * noise, -1.0, 1.0)
-            logger.info(f"Applied Gaussian noise (factor={noise_factor:.5f})")
+            logger.debug(f"Applied Gaussian noise (factor={noise_factor:.5f})")
             return augmented
         except Exception as e:
             logger.error(f"Noise augmentation failed: {e}")
@@ -144,7 +144,7 @@ class AudioAugmentation:
                     sample.flatten(), sr=self.sr, n_steps=int(step))
                 for sample, step in zip(audio, n_steps)
             ])
-            logger.info(f"Applied pitch shift with random steps.")
+            logger.debug(f"Applied pitch shift with random steps.")
             return shifted
         except Exception as e:
             logger.error(f"Pitch shift augmentation failed: {e}")
@@ -173,7 +173,7 @@ class AudioAugmentation:
                 np.clip(sample * factor, -1.0, 1.0)
                 for sample, factor in zip(audio, scale)
             ])
-            logger.info(f"Applied amplitude scaling.")
+            logger.debug(f"Applied amplitude scaling.")
             return scaled
         except Exception as e:
             logger.error(f"Amplitude scaling failed: {e}")
@@ -206,7 +206,7 @@ class AudioAugmentation:
             if np.random.random() < prob:
                 try:
                     augmented = func(augmented)
-                    logger.info(f"Applied {name} augmentation")
+                    logger.debug(f"Applied {name} augmentation")
                 except Exception as e:
                     logger.warning(f"{name} augmentation failed: {e}")
 
@@ -238,16 +238,18 @@ class AudioAugmentation:
 
         try:
             logger.info(
-                f"Starting audio augmentation | num_aug={num_aug}, shuffle={shuffle}")
-            logger.info(f"Input shape: {audio.shape}")
+                f"🚀 Starting audio augmentation | num_aug={num_aug}, shuffle={shuffle}")
+            logger.debug(f"Input shape: {audio.shape}")
 
             all_labels = np.tile(label, (num_aug + 1, 1))
             augment_batches = []
 
             for i in range(num_aug):
-                logger.info(f"Running augmentation round {i + 1}/{num_aug}")
+                logger.info(f"🔁 Running augmentation round {i + 1}/{num_aug}")
                 aug = np.stack([
-                        self._random_augment(audio[j])
+                        self._random_augment(audio[j]).reshape(
+                            audio.shape[1], audio.shape[2]
+                        )
                     for j in range(audio.shape[0])
                 ])
                 augment_batches.append(aug)
@@ -260,10 +262,10 @@ class AudioAugmentation:
                 np.random.shuffle(indices)
                 combined_audio = combined_audio[indices]
                 all_labels = all_labels[indices]
-                logger.info("Shuffled augmented dataset")
+                logger.info("🔀 Shuffled augmented dataset")
 
             logger.info(
-                f"Augmentation complete. Final dataset shape: {combined_audio.shape}, {all_labels.shape}")
+                f"✅ Augmentation complete. Final dataset shape: {combined_audio.shape}, {all_labels.shape}")
             return combined_audio, all_labels
 
         except Exception as e:
