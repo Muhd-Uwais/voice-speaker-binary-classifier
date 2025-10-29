@@ -12,6 +12,7 @@ dataset structure for later preprocessing and training steps.
 Author: Muhd Uwais
 Project: Deep Voice Speaker Recognition CNN
 Purpose: Audio Chunk Creation
+License: MIT
 """
 
 import os

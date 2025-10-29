@@ -15,6 +15,11 @@ Notes:
 ------
 - Each augmentation is applied randomly with defined probabilities.
 - Extendable for time/frequency masking, VTLP, or spectrogram augmentations.
+
+Author: Muhd Uwais
+Project: Deep Voice Speaker Recognition CNN
+Purpose: Audio Augmentation
+License: MIT
 """
 
 import os
@@ -107,7 +112,6 @@ class AudioAugmentation:
         try:
             noise_factor = noise_factor or np.random.uniform(0.001, 0.01)
             noise = np.random.randn(*audio.shape)
-            print(noise.shape)
             augmented = np.clip(audio + noise_factor * noise, -1.0, 1.0)
             logger.info(f"Applied Gaussian noise (factor={noise_factor:.5f})")
             return augmented
@@ -133,7 +137,8 @@ class AudioAugmentation:
         """
 
         try:
-            n_steps = n_steps or np.random.randint(-3, 4, size=audio.shape[0])
+            if n_steps is None:
+                n_steps = np.random.randint(-3, 4, size=audio.shape[0])
             shifted = np.stack([
                 librosa.effects.pitch_shift(
                     sample.flatten(), sr=self.sr, n_steps=int(step))
@@ -242,8 +247,7 @@ class AudioAugmentation:
             for i in range(num_aug):
                 logger.info(f"Running augmentation round {i + 1}/{num_aug}")
                 aug = np.stack([
-                    self._random_augment(audio[j]).reshape(
-                        audio.shape[1], audio.shape[2])
+                        self._random_augment(audio[j])
                     for j in range(audio.shape[0])
                 ])
                 augment_batches.append(aug)

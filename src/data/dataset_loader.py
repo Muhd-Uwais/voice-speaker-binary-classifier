@@ -29,6 +29,7 @@ Notes:
 Author: Muhd Uwais
 Project: Deep Voice Speaker Recognition CNN
 Purpose: Audio Dataset Loader
+License: MIT
 """
 
 
